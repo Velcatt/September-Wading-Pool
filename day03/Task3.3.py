@@ -1,0 +1,5 @@
+print("Enter a number :")
+x = input()
+print("Enter another number :")
+y = input()
+print("The sum of the provided numbers is " + str(float(x)+float(y)))

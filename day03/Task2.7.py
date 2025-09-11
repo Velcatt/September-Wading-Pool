@@ -1,0 +1,1 @@
+print("hello"+"42") #Il faut ajouter des guillemets car Python ne peut pas concaténer une chaine et un entier
