@@ -12,11 +12,11 @@ def quick_sort(liste):
         return quick_sort(greater) + [pivot] + quick_sort(lesser)
 
 
-start = time.time()
 liste = []
 for i in range(100001):
     liste.append(random.randint(0, 10000000000))
 
+start = time.time()
 print(quick_sort(liste)[::-1])
 
 print(time.time() - start)
