@@ -11,4 +11,5 @@ highest = 0
 for key in numbers:
     if numbers[key] > highest:
         result = key
+        highest = numbers[key]
 print(result)
