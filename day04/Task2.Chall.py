@@ -4,7 +4,7 @@ vowels = ["a", "e", "i", "o", "u", "y"]
 liste = [i in chaine for i in vowels]
 if entier == 0:
     quit()
-elif anchaine(liste):
+elif any(liste):
     print(entier)
 elif entier >= 42:
     print(entier)
