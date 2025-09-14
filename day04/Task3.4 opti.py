@@ -1,6 +1,7 @@
 import itertools
 import time
 
+# VARIABLES GLOBALES -----------------------------------------------------------------------------------------------------------------------------------------------
 VIGENERE_REF = {
     "a": 0,
     "b": 1,
@@ -90,8 +91,12 @@ ENGLISH_LETTER_FREQ = {
     "z": 0.1,
 }
 
+# FONCTIONS -----------------------------------------------------------------------------------------------------------------------------------------------
 
-def englishcheck(text):
+
+def englishcheck(
+    text,
+):  # Fonction qui donne un score à un texte en fonction de s'il ressemble à de l'anglais ou non. Plus le score est bas, plus c'est proche de l'anglais
     occurence = {
         "a": 0,
         "b": 0,
@@ -149,12 +154,14 @@ def englishcheck(text):
         "z": 0,
     }
     score = 0
+    # Reconnaissance par fréquence -----------------------------------
     for i in range(26):
         occurence[ALPHABET_REF[i]] = text.count(ALPHABET_REF[i])
     for i in range(26):
         frequency[ALPHABET_REF[i]] = occurence[ALPHABET_REF[i]] / len(text) * 100
     for i in range(26):
         score += abs(frequency[ALPHABET_REF[i]] - ENGLISH_LETTER_FREQ[ALPHABET_REF[i]])
+    # Reconnaissance par dictionnaire (simple) -----------------------
     if " the " in text:
         score -= 5 * text.count(" the ")
     if " of " in text:
@@ -166,7 +173,7 @@ def englishcheck(text):
     return score
 
 
-def decrypt(text, key):
+def decrypt(text, key):  # Fonction decryptant un texte encodé en vigenere, avec la clé
     final = ""
     n = 0
     for character in text:
@@ -181,12 +188,16 @@ def decrypt(text, key):
     return final
 
 
-def allcombinations(probablekeyletters, length):
+def allcombinations(
+    probablekeyletters,
+):  # Fonction retournant toutes les clés possibles à partir des lettres probables de la clé
     combinations = itertools.product(*probablekeyletters)
     return combinations
 
 
-def blockify(message, keylength):
+def blockify(
+    message, keylength
+):  # Fonction qui transforme un texte en blocs de même longueur que la clé
     result = []
     temp_list = []
     i = 0
@@ -201,7 +212,9 @@ def blockify(message, keylength):
     return result
 
 
-def mostcommonletter(occurence):
+def mostcommonletter(
+    occurence,
+):  # Fonction retournant la lettre la plus commune dans un dictionnaire d'occurences
     maxkey = ""
     maxvalue = 0
     for key in occurence:
@@ -211,16 +224,9 @@ def mostcommonletter(occurence):
     return maxkey
 
 
-def removeduplicate(liste):
-    i = 0
-    while i < len(liste):
-        if liste.count(liste[i]) > 1:
-            liste.pop(i)
-        i += 1
-    return liste
-
-
-def keynthletters(blocks, n):
+def keynthletters(
+    blocks, n
+):  # Fonction retournant les lettres les plus probables pour la nième lettre de la clé, a partir des blocs
     occurence = {
         "a": 0,
         "b": 0,
@@ -252,18 +258,40 @@ def keynthletters(blocks, n):
     result = []
     for block in blocks:
         if len(block) > n:
-            occurence[block[n]] += 1
-    most_common_letter = mostcommonletter(occurence)
-    result.append(ALPHABET_LIST[(VIGENERE_REF[most_common_letter] - 4 + 26) % 26])
-    result.append(ALPHABET_LIST[(VIGENERE_REF[most_common_letter] - 19 + 26) % 26])
-    result.append(ALPHABET_LIST[(VIGENERE_REF[most_common_letter] + 26) % 26])
-    result.append(ALPHABET_LIST[(VIGENERE_REF[most_common_letter] - 14 + 26) % 26])
-    result.append(ALPHABET_LIST[(VIGENERE_REF[most_common_letter] - 8 + 26) % 26])
-    result.append(ALPHABET_LIST[(VIGENERE_REF[most_common_letter] - 13 + 26) % 26])
-    result.append(ALPHABET_LIST[(VIGENERE_REF[most_common_letter] - 18 + 26) % 26])
-    result.append(ALPHABET_LIST[(VIGENERE_REF[most_common_letter] - 7 + 26) % 26])
-    return removeduplicate(result)
+            occurence[
+                block[n]
+            ] += 1  # On prend l'occurence de chaque lettre à la nième position de chaques blocs
+    most_common_letter = mostcommonletter(
+        occurence
+    )  # On prend la lettre la plus commune dans occurence
+    result.append(
+        ALPHABET_LIST[(VIGENERE_REF[most_common_letter] - 4 + 26) % 26]
+    )  # Lettre de la clé si la lettre la plus commune est un "e"
+    result.append(
+        ALPHABET_LIST[(VIGENERE_REF[most_common_letter] - 19 + 26) % 26]
+    )  # Lettre de la clé si la lettre la plus commune est un "t"
+    result.append(
+        ALPHABET_LIST[(VIGENERE_REF[most_common_letter] + 26) % 26]
+    )  # Lettre de la clé si la lettre la plus commune est un "a"
+    result.append(
+        ALPHABET_LIST[(VIGENERE_REF[most_common_letter] - 14 + 26) % 26]
+    )  # Lettre de la clé si la lettre la plus commune est un "o"
+    result.append(
+        ALPHABET_LIST[(VIGENERE_REF[most_common_letter] - 8 + 26) % 26]
+    )  # Lettre de la clé si la lettre la plus commune est un "i"
+    result.append(
+        ALPHABET_LIST[(VIGENERE_REF[most_common_letter] - 13 + 26) % 26]
+    )  # Lettre de la clé si la lettre la plus commune est un "n"
+    result.append(
+        ALPHABET_LIST[(VIGENERE_REF[most_common_letter] - 18 + 26) % 26]
+    )  # Lettre de la clé si la lettre la plus commune est un "s"
+    result.append(
+        ALPHABET_LIST[(VIGENERE_REF[most_common_letter] - 7 + 26) % 26]
+    )  # Lettre de la clé si la lettre la plus commune est un "h"
+    return result
 
+
+# MAIN -----------------------------------------------------------------------------------------------------------------------------------------------
 
 message = (
     input("Enter a message to decrypt : ").lower().replace(".", "").replace(",", "")
@@ -272,10 +300,12 @@ keylength = int(input("Enter the length of the key : "))
 
 start = time.time()
 
+# Attaque par fréquence, on utilise la fréquence des lettres dans des blocs de la taille de la clé pour trouver les lettres probables de la clés
 blocks = blockify(message.replace(" ", ""), keylength)
 probablekeyletters = [keynthletters(blocks, i) for i in range(keylength)]
-combinations = allcombinations(probablekeyletters, keylength)
+combinations = allcombinations(probablekeyletters)
 
+# Attaque par force brute, on test une à une toutes les possibilités de clés avec les lettres probables trouvées précédemment
 results = []
 for testkey in combinations:
     decrypted = decrypt(message, testkey)
