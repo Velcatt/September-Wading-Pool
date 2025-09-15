@@ -45,8 +45,6 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-[![Product Name Screen Shot][product-screenshot]](https://example.com)
-
 This is my code for Epitech Pre-MSC September wading pool.
 
 It's a collection of exercises and utility made in python 3
