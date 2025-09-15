@@ -18,13 +18,6 @@
 *** for contributors-url, forks-url, etc. This is an optional, concise syntax you may use.
 *** https://www.markdownguide.org/basic-syntax/#reference-style-links
 -->
-[![Contributors][contributors-shield]][contributors-url]
-[![Forks][forks-shield]][forks-url]
-[![Stargazers][stars-shield]][stars-url]
-[![Issues][issues-shield]][issues-url]
-[![Unlicense License][license-shield]][license-url]
-[![LinkedIn][linkedin-shield]][linkedin-url]
-
 
 <!-- TABLE OF CONTENTS -->
 <details id=#readme-top>
@@ -64,8 +57,7 @@ It's a collection of exercises and utility made in python 3
 
 ### Built With
 
-* [![Next][Next.js]][Next-url]
-* [![Python][Python.org]][JQuery-url]
+* [![Python][Python.org]][Python-url]
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -76,7 +68,6 @@ It's a collection of exercises and utility made in python 3
 
 ### Prerequisites
 
-This is an example of how to list things you need to use the software and how to install them.
 * Python
   ```sh
   sudo pacman -S python
