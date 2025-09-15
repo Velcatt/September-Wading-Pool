@@ -56,6 +56,7 @@ It's a collection of exercises and utility made in python 3
 ### Built With
 
 * [![Python][Python.org]][Python-url]
+* [Static Badge](https://img.shields.io/badge/Python-FFD43B?style=for-the-badge&logo=python&logoColor=blue)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
