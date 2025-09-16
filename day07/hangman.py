@@ -1,6 +1,8 @@
 import random
 from english_words import get_english_words_set
 
+ENGLISH_WORDS_SET = get_english_words_set(["web2"], lower=True)
+
 
 def lose(penalty, goal):
     if penalty >= 12:
@@ -8,7 +10,7 @@ def lose(penalty, goal):
         print("The word was '" + goal + "'")
 
 
-def win(penalty, goal):
+def win(penalty):
     if penalty <= 1:
         print("correct! - " + str(penalty) + " penalty")
     else:
@@ -69,40 +71,49 @@ def step(current, penalty):
         print(" / " + str(penalty) + " penalties")
 
 
-english_words_set = get_english_words_set(["web2"], lower=True)
-mode = input("type 'a' to chose a word or 'b' to get a random one : ")
-if mode == "a":
-    goal = input("Enter the word to guess : ")
-elif mode == "b":
-    goal = randomset(english_words_set)[0]
-else:
-    print(
-        "ERREUR : veuillez ne choisir que 'a' ou 'b' comme mode. Mode 'b' utilisé par défaut"
-    )
-    goal = randomset(english_words_set)[0]
+def game():
 
-current = initcurrent(goal)
-penalty = 0
-printunderscores(goal)
-while current != goal and penalty < 12:
-    guess = input("Make a guess : ")
-    if len(guess) > 1:
-        if guess == goal:
-            current = goal
-            win(penalty, goal)
-        else:
-            penalty += 5
-            print("incorrect guess - " + str(penalty) + " penalties")
+    mode = input("type 'a' to chose a word or 'b' to get a random one : ")
+    if mode == "a":
+        goal = input("Enter the word to guess : ")
+    elif mode == "b":
+        goal = randomset(ENGLISH_WORDS_SET)[0]
     else:
-        if lettercheck(guess, goal):
-            occ = occurences(guess, goal)
-            print("Found " + str(len(occ)) + " '" + guess + "'")
-            current = replaceincurrent(current, occ, guess)
-            step(current, penalty)
-            if current == goal:
-                win(penalty, goal)
+        print(
+            "ERREUR : veuillez ne choisir que 'a' ou 'b' comme mode. Mode 'b' utilisé par défaut"
+        )
+        goal = randomset(ENGLISH_WORDS_SET)[0]
+
+    current = initcurrent(goal)
+    penalty = 0
+    printunderscores(goal)
+    while current != goal and penalty < 12:
+        guess = input("Make a guess : ")
+        if len(guess) > 1:
+            if guess == goal:
+                current = goal
+                win(penalty)
+            else:
+                penalty += 5
+                print("incorrect guess - " + str(penalty) + " penalties")
         else:
-            print("No '" + guess + "' found")
-            penalty += 1
-            step(current, penalty)
-lose(penalty, goal)
+            if lettercheck(guess, goal):
+                occ = occurences(guess, goal)
+                print("Found " + str(len(occ)) + " '" + guess + "'")
+                current = replaceincurrent(current, occ, guess)
+                step(current, penalty)
+                if current == goal:
+                    win(penalty)
+            else:
+                print("No '" + guess + "' found")
+                penalty += 1
+                step(current, penalty)
+    lose(penalty, goal)
+
+
+# MAIN
+
+playing = "yes"
+while playing == "yes":
+    game()
+    playing = input("wanna play again ? yes/no : ")
