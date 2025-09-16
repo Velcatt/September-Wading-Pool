@@ -80,14 +80,17 @@ def game():
         goal = randomset(ENGLISH_WORDS_SET)[0]
     else:
         print(
-            "ERREUR : veuillez ne choisir que 'a' ou 'b' comme mode. Mode 'b' utilisé par défaut"
+            "ERROR : please only chose between 'a' or 'b' for the mode. Mode 'b' choosed by default"
         )
         goal = randomset(ENGLISH_WORDS_SET)[0]
 
+    maxpenalty = int(input("Enter the max number of penalties : "))
+
     current = initcurrent(goal)
     penalty = 0
+    guessedletters = []
     printunderscores(goal)
-    while current != goal and penalty < 12:
+    while current != goal and penalty < maxpenalty:
         guess = input("Make a guess : ")
         if len(guess) > 1:
             if guess == goal:
@@ -97,17 +100,24 @@ def game():
                 penalty += 5
                 print("incorrect guess - " + str(penalty) + " penalties")
         else:
-            if lettercheck(guess, goal):
-                occ = occurences(guess, goal)
-                print("Found " + str(len(occ)) + " '" + guess + "'")
-                current = replaceincurrent(current, occ, guess)
+            if guess in guessedletters:
+                print(
+                    "You already asked for '" + guess + "', please chose another letter"
+                )
                 step(current, penalty)
-                if current == goal:
-                    win(penalty)
             else:
-                print("No '" + guess + "' found")
-                penalty += 1
-                step(current, penalty)
+                guessedletters.append(guess)
+                if lettercheck(guess, goal):
+                    occ = occurences(guess, goal)
+                    print("Found " + str(len(occ)) + " '" + guess + "'")
+                    current = replaceincurrent(current, occ, guess)
+                    step(current, penalty)
+                    if current == goal:
+                        win(penalty)
+                else:
+                    print("No '" + guess + "' found")
+                    penalty += 1
+                    step(current, penalty)
     lose(penalty, goal)
 
 
