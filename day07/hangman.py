@@ -1,4 +1,5 @@
 import random
+import os
 from english_words import get_english_words_set
 
 ENGLISH_WORDS_SET = get_english_words_set(["web2"], lower=True)
@@ -28,7 +29,7 @@ def printunderscores(s):
 
 def initcurrent(goal):
     current = ""
-    for i in range(len(goal)):
+    for i in goal:
         current += "*"
     return current
 
@@ -89,6 +90,7 @@ def game():
     current = initcurrent(goal)
     penalty = 0
     guessedletters = []
+    os.system("clear")
     printunderscores(goal)
     while current != goal and penalty < maxpenalty:
         guess = input("Make a guess : ")
@@ -98,9 +100,12 @@ def game():
                 win(penalty)
             else:
                 penalty += 5
+                os.system("clear")
                 print("incorrect guess - " + str(penalty) + " penalties")
+                step(current, penalty)
         else:
             if guess in guessedletters:
+                os.system("clear")
                 print(
                     "You already asked for '" + guess + "', please chose another letter"
                 )
@@ -109,12 +114,14 @@ def game():
                 guessedletters.append(guess)
                 if lettercheck(guess, goal):
                     occ = occurences(guess, goal)
+                    os.system("clear")
                     print("Found " + str(len(occ)) + " '" + guess + "'")
                     current = replaceincurrent(current, occ, guess)
                     step(current, penalty)
                     if current == goal:
                         win(penalty)
                 else:
+                    os.system("clear")
                     print("No '" + guess + "' found")
                     penalty += 1
                     step(current, penalty)
