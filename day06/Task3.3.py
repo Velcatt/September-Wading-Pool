@@ -24,10 +24,7 @@ def funC(s, n):
 
 def passcheck(funct, n, s):
     if isinstance(n, int) and isinstance(s, str) and callable(funct):
-        if funct(s, n):
-            return True
-        else:
-            return False
+        return funct(s, n)
     else:
         return "ERREUR DE TYPE : vérifiez les paramètres de la fonction passcheck"
 
