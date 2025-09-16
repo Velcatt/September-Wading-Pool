@@ -28,3 +28,9 @@ caractères lisiaaables et grep fait une recherche du paterne "======"
 bandit11 : cat data.txt | base64 -d
 
 bandit12 : cat data.txt | tr 'A-Za-z' 'N-ZA-Mn-za-m'
+
+bandit13 : xxd -r data.txt > data2 pour retransformer le hexdump en binary
+           xxd data2 pour check les premiers charactères en hex
+           Si c'est 6461 : c'est un tar, on le transforme en tar avec mv puis on utilise tar -xvf data2.tar
+           Si c'est 1F8B : c'est un gzip, on le transforme en gz avec mv puis on utilise gzip -d data2.gz
+           Si c'est 425A : c'est un bzip2, on le transforme en bz2 avec mv puis on utilise bzip2 -d data2.bz2
