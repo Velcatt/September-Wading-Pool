@@ -4,6 +4,8 @@ import random
 from english_words import get_english_words_set
 from inputbox import InputBox
 
+# GLOBAL VARIABLES ------------------------------------------------
+
 ENGLISH_WORDS_SET = get_english_words_set(["web2"], lower=True)
 
 ALPHABET_LIST = [
@@ -35,15 +37,7 @@ ALPHABET_LIST = [
     "z",
 ]
 
-# FUNCTIONS --------------------------------------
-
-
-def win():
-    return announcement_font.render("YOU WIN!", False, (0, 255, 0))
-
-
-def lose():
-    return announcement_font.render("YOU LOSE!", False, (255, 0, 0))
+# BACK-END FUNCTIONS --------------------------------------
 
 
 def underscores(s):
@@ -100,6 +94,17 @@ def replace_in_current(
     return newcurrent
 
 
+# DISPLAY FUNCTIONS --------------------------------------------------
+
+
+def win():
+    return announcement_font.render("YOU WIN!", False, (0, 255, 0))
+
+
+def lose():
+    return announcement_font.render("YOU LOSE!", False, (255, 0, 0))
+
+
 def already_used(letter):
     return info_font.render(
         "You already tried '" + letter + "'", False, (255, 255, 255)
@@ -122,7 +127,7 @@ def not_a_letter():
 
 def again():
     return info_font.render(
-        "Type 'again' to try again, 'no' to quit", False, (255, 255, 255)
+        "Type 'again' to try again, 'quit' to quit", False, (255, 255, 255)
     )
 
 
@@ -134,7 +139,7 @@ def render_word(current):
     return game_font.render(step(current), False, (255, 255, 255))
 
 
-# DRAW FUNCTIONS --------------------------------------
+# HANGMAN DRAW FUNCTIONS --------------------------------------
 
 
 def draw_gallows_1():
@@ -190,7 +195,7 @@ HANGMAN_DRAW_FUNCTIONS = [
     draw_right_leg,
 ]
 
-# GAME FUNCTION -------------------------------------------
+# GAME MAIN FUNCTION -------------------------------------------
 
 
 def game():
@@ -249,19 +254,19 @@ def game():
         if current == goal:
             if guess == "again":
                 return True
-            elif guess == "no":
+            elif guess == "quit":
                 return False
         text_surface = render_word(current)
         window.blit(announcement, (230, 350))
         window.blit(text_surface, (50, 460))
-        window.blit(info, (300, 500))
+        window.blit(info, (270, 500))
         input_box.update()
         input_box.draw(window)
 
         pygame.display.update()
 
 
-# MAIN ----------------------------------------------------
+# MAIN CODE ----------------------------------------------------
 
 pygame.init()
 window = pygame.display.set_mode((600, 600))
