@@ -1,5 +1,4 @@
 import pygame
-import clock
 import random
 from english_words import get_english_words_set
 from inputbox import InputBox
@@ -262,7 +261,6 @@ def game():
         window.blit(info, (270, 500))
         input_box.update()
         input_box.draw(window)
-
         pygame.display.update()
 
 
@@ -270,8 +268,7 @@ def game():
 
 pygame.init()
 window = pygame.display.set_mode((600, 600))
-clock = pygame.time.Clock()
-bg = pygame.image.load("pixelart.png")
+bg = pygame.image.load("/home/velcatt/CODE/Epitech/September-Wading-Pool/day08/hangman/pixelart.png") # A REMPLACER PAR LE CHEMIN DE pixelart.png SUR VOTRE CONFIG
 
 game_font = pygame.font.SysFont(None, 25)
 announcement_font = pygame.font.SysFont(None, 40)
