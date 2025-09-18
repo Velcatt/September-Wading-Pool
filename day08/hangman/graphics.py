@@ -19,21 +19,25 @@ class Graphics:
         self.initialized = True
 
     def update(self, game):
-        self.window.blit(self.bg, (0, 0))
         self.text_surface = self.render_word(game.current)
         self.info = self.info_font.render(game.info, False, (255, 255, 255))
         self.announcement = self.announcement_font.render(
             game.announcement, False, (0, 0, 0)
         )
         self.score = self.score_font.render(game.score, False, (0, 0, 0))
+
+        self.window.blit(self.bg, (0, 0))
         self.window.blit(self.announcement, (230, 350))
         self.window.blit(self.text_surface, (50, 460))
         self.window.blit(self.info, (270, 505))
         self.window.blit(self.score, (230, 375))
+
         self.input_box.update()
-        self.input_box.draw(self.window)
-        self.hangman_draw(game.penalty)
         self.input_box.handle_event(game.event)
+        self.input_box.draw(self.window)
+
+        self.hangman_draw(game.penalty)
+        
         pygame.display.update()
 
     def render_word(self, current):
@@ -95,4 +99,5 @@ class Graphics:
 
     def hangman_draw(self, penalty):
         for i in range(min(penalty, 10)):
+
             self.HANGMAN_DRAW_FUNCTIONS[i](self)

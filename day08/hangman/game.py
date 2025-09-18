@@ -3,8 +3,6 @@ import random
 import datetime
 from english_words import get_english_words_set
 
-from inputbox import InputBox
-
 ENGLISH_WORDS_SET = get_english_words_set(["web2"], lower=True)
 
 EASY_ENGLISH_WORDS_SET = set(
@@ -77,6 +75,20 @@ class Game:
                 li.append(i)
         return li
 
+    def win(self):
+        self.announcement = "YOU WIN!"
+        self.score = "Score : " + str(self.attempts)
+        self.best_score.append(datetime.date.today().isoformat())
+        self.best_score.append(str(self.attempts))
+        print(self.best_score)
+        self.info = "Type 'again' to try again, 'quit' to quit"
+
+    def lose(self):
+        self.announcement = "YOU LOSE!"
+        self.current = self.goal
+        self.info = "Type 'again' to try again, 'quit' to quit"
+        
+
     def replace_in_current(self, current, li, letter):
         newcurrent = ""
         for i in range(len(current)):
@@ -103,13 +115,8 @@ class Game:
             if len(self.guess) > 1:
                 self.attempts += 1
                 if self.guess == self.goal:
-                    self.announcement = "YOU WIN!"
-                    self.score = "Score : " + str(self.attempts)
-                    self.best_score.append(datetime.date.today().isoformat())
-                    self.best_score.append(str(self.attempts))
-                    print(self.best_score)
                     self.current = self.goal
-                    self.info = "Type 'again' to try again, 'quit' to quit"
+                    self.win()
                 else:
                     self.info = "Incorrect guess!"
                     self.penalty += 3
@@ -128,17 +135,10 @@ class Game:
                             self.current, occ, self.guess
                         )
                         if self.current == self.goal:
-                            self.announcement = "YOU WIN!"
-                            self.score = "Score : " + str(self.attempts)
-                            self.best_score.append(datetime.date.today().isoformat())
-                            self.best_score.append(str(self.attempts))
-                            print(self.best_score)
-                            self.info = "Type 'again' to try again, 'quit' to quit"
+                            self.win()
                     else:
                         self.info = "No '" + self.guess + "' found"
                         self.penalty += 1
         if self.penalty >= 10:
-            self.announcement = "YOU LOSE!"
-            self.current = self.goal
-            self.info = "Type 'again' to try again, 'quit' to quit"
+            self.lose()
         return True

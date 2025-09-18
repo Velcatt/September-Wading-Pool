@@ -16,12 +16,14 @@ while newgame:
     if game.current == game.goal:
         game = Game()
         playing = True
+        graphics.input_box.last_input = ""
         graphics.update(game)
     while playing:
         game.last_input = graphics.input_box.last_input
         playing = game.run()
         newgame = game.newgame
         graphics.update(game)
+        
 
 pygame.display.quit()
 pygame.quit()
