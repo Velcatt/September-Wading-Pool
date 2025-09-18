@@ -4,35 +4,35 @@ from inputbox import InputBox
 
 class Graphics:
 
-    def __init__(self, current):
+    def __init__(self, game):
         self.window = pygame.display.set_mode((600, 600))
         self.bg = pygame.image.load("pixelart.png")
         self.game_font = pygame.font.SysFont(None, 25)
         self.announcement_font = pygame.font.SysFont(None, 40)
         self.info_font = pygame.font.SysFont(None, 25)
         self.score_font = pygame.font.SysFont(None, 32)
-        self.text_surface = self.render_word(current)
+        self.text_surface = self.render_word(game.current)
         self.announcement = self.announcement_font.render("", False, (0, 0, 0))
         self.info = self.info_font.render("", False, (0, 0, 0))
         self.score = self.score_font.render("", False, (0, 0, 0))
         self.input_box = InputBox(50, 500, 140, 32)
 
-    def update(self, current, penalty, event, info, announcement, score):
+    def update(self, game):
         self.window.blit(self.bg, (0, 0))
-        self.text_surface = self.render_word(current)
-        self.info = self.info_font.render(info, False, (255, 255, 255))
+        self.text_surface = self.render_word(game.current)
+        self.info = self.info_font.render(game.info, False, (255, 255, 255))
         self.announcement = self.announcement_font.render(
-            announcement, False, (0, 0, 0)
+            game.announcement, False, (0, 0, 0)
         )
-        self.score = self.score_font.render(score, False, (0, 0, 0))
+        self.score = self.score_font.render(game.score, False, (0, 0, 0))
         self.window.blit(self.announcement, (230, 350))
         self.window.blit(self.text_surface, (50, 460))
         self.window.blit(self.info, (270, 505))
         self.window.blit(self.score, (230, 375))
         self.input_box.update()
         self.input_box.draw(self.window)
-        self.hangman_draw(penalty)
-        self.input_box.handle_event(event)
+        self.hangman_draw(game.penalty)
+        self.input_box.handle_event(game.event)
         pygame.display.update()
 
     def render_word(self, current):

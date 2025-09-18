@@ -23,6 +23,7 @@ def funC(s, n):
 
 
 def passcheck(funct, n, s):
+
     if funct(s, n):
         return True
     else:
