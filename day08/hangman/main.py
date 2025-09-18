@@ -7,18 +7,20 @@ from game import Game
 pygame.init()
 
 newgame = True
+playing = True
 
+game = Game()
+graphics = Graphics(game)
 
 while newgame:
-    game = Game()
-    graphics = Graphics(game)
-    newgame = game.newgame
-    graphics.update(game)
-    playing = True
-
-    while playing and newgame:
+    if game.current == game.goal:
+        game = Game()
+        playing = True
+        graphics.update(game)
+    while playing:
         game.last_input = graphics.input_box.last_input
         playing = game.run()
+        newgame = game.newgame
         graphics.update(game)
 
 pygame.display.quit()

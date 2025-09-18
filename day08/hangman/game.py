@@ -55,7 +55,7 @@ class Game:
         self.info = ""
         self.score = ""
         self.last_input = ""
-        self.event = pygame.event.Event(pygame.KEYDOWN)
+        self.event = pygame.event.Event(pygame.USEREVENT)
         self.newgame = True
 
     def randomset(self, s):
@@ -94,8 +94,10 @@ class Game:
         if self.current == self.goal:
             if self.guess == "again":
                 self.newgame = True
+                return False
             elif self.guess == "quit":
                 self.newgame = False
+                return False
         if self.guess != self.last_input:
             self.guess = self.last_input
             if len(self.guess) > 1:

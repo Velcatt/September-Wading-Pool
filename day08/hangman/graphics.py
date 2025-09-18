@@ -16,6 +16,7 @@ class Graphics:
         self.info = self.info_font.render("", False, (0, 0, 0))
         self.score = self.score_font.render("", False, (0, 0, 0))
         self.input_box = InputBox(50, 500, 140, 32)
+        self.initialized = True
 
     def update(self, game):
         self.window.blit(self.bg, (0, 0))
