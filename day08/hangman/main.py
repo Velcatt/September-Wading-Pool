@@ -268,7 +268,7 @@ def game():
 
 pygame.init()
 window = pygame.display.set_mode((600, 600))
-bg = pygame.image.load("pixelart.png") # A REMPLACER PAR LE CHEMIN DE pixelart.png SUR VOTRE CONFIG
+bg = pygame.image.load("pixelart.png")
 
 game_font = pygame.font.SysFont(None, 25)
 announcement_font = pygame.font.SysFont(None, 40)
