@@ -1,11 +1,16 @@
 import pygame
 import random
+import datetime
 from english_words import get_english_words_set
 from inputbox import InputBox
 
 # GLOBAL VARIABLES ------------------------------------------------
 
 ENGLISH_WORDS_SET = get_english_words_set(["web2"], lower=True)
+
+EASY_ENGLISH_WORDS_SET = set(
+    line.strip().lower() for line in open("word_list_easy.txt")
+)
 
 ALPHABET_LIST = [
     "a",
@@ -138,6 +143,11 @@ def render_word(current):
     return game_font.render(step(current), False, (255, 255, 255))
 
 
+def display_score(attempts):
+
+    return score_font.render("Score : " + str(attempts), False, (0, 0, 0))
+
+
 # HANGMAN DRAW FUNCTIONS --------------------------------------
 
 
@@ -198,8 +208,11 @@ HANGMAN_DRAW_FUNCTIONS = [
 
 
 def game():
-    goal = randomset(ENGLISH_WORDS_SET)
+    # goal = randomset(EASY_ENGLISH_WORDS_SET)
+    goal = "apple"
     penalty = 0
+    attempts = 0
+    best_score = []
     current = initcurrent(goal)
     guess = ""
     guessed_letters = []
@@ -207,6 +220,8 @@ def game():
     text_surface = render_word(current)
     announcement = announcement_font.render("", False, (0, 0, 0))
     info = info_font.render("", False, (0, 0, 0))
+    score = score_font.render("", False, (0, 0, 0))
+
     input_box = InputBox(50, 500, 140, 32)
 
     running = True
@@ -219,8 +234,13 @@ def game():
         if guess != input_box.last_input:
             guess = input_box.last_input
             if len(guess) > 1:
+                attempts += 1
                 if guess == goal:
                     announcement = win()
+                    score = display_score(attempts)
+                    best_score.append(datetime.date.today().isoformat())
+                    best_score.append(str(attempts))
+                    print(best_score)
                     current = goal
                     info = again()
                 else:
@@ -232,6 +252,7 @@ def game():
                 elif guess not in ALPHABET_LIST:
                     info = not_a_letter()
                 else:
+                    attempts += 1
                     guessed_letters.append(guess)
                     if lettercheck(guess, goal):
                         occ = occurences(guess, goal)
@@ -239,6 +260,10 @@ def game():
                         current = replace_in_current(current, occ, guess)
                         if current == goal:
                             announcement = win()
+                            score = display_score(attempts)
+                            best_score.append(datetime.date.today().isoformat())
+                            best_score.append(str(attempts))
+                            print(best_score)
                             info = again()
                     else:
                         info = letter_not_found(guess)
@@ -259,6 +284,7 @@ def game():
         window.blit(announcement, (230, 350))
         window.blit(text_surface, (50, 460))
         window.blit(info, (270, 505))
+        window.blit(score, (230, 375))
         input_box.update()
         input_box.draw(window)
         pygame.display.update()
@@ -273,6 +299,7 @@ bg = pygame.image.load("pixelart.png")
 game_font = pygame.font.SysFont(None, 25)
 announcement_font = pygame.font.SysFont(None, 40)
 info_font = pygame.font.SysFont(None, 25)
+score_font = pygame.font.SysFont(None, 32)
 
 playing = True
 while playing:
