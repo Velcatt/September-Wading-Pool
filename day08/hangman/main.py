@@ -258,7 +258,7 @@ def game():
         text_surface = render_word(current)
         window.blit(announcement, (230, 350))
         window.blit(text_surface, (50, 460))
-        window.blit(info, (270, 500))
+        window.blit(info, (270, 505))
         input_box.update()
         input_box.draw(window)
         pygame.display.update()
@@ -268,7 +268,7 @@ def game():
 
 pygame.init()
 window = pygame.display.set_mode((600, 600))
-bg = pygame.image.load("/home/velcatt/CODE/Epitech/September-Wading-Pool/day08/hangman/pixelart.png") # A REMPLACER PAR LE CHEMIN DE pixelart.png SUR VOTRE CONFIG
+bg = pygame.image.load("pixelart.png") # A REMPLACER PAR LE CHEMIN DE pixelart.png SUR VOTRE CONFIG
 
 game_font = pygame.font.SysFont(None, 25)
 announcement_font = pygame.font.SysFont(None, 40)
