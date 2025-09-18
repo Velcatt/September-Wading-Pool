@@ -47,7 +47,7 @@
 
 This is my code for Epitech Pre-MSC September wading pool.
 
-It's a collection of exercises and utility made in python 3
+It's a collection of exercises, utilities and games made in python 3.13.7
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
