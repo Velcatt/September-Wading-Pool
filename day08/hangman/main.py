@@ -11,7 +11,7 @@ newgame = True
 playing = True
 event = pygame.event.Event(pygame.USEREVENT)
 game_event = ""
-difficulty = ""
+menu_route = ""
 name = ""
 
 menu = Menu()
@@ -27,13 +27,18 @@ while newgame:
         quit_event = menu.quit_menu(game_event)
         newgame = quit_event
         name = graphics.name_input.text
-        difficulty = graphics.menu_update(pygame_event) if quit_event else "Quit"
-        isMenu = quit_event and (True if difficulty == "" else False)
+        menu_route = graphics.menu_update(pygame_event) if quit_event else "Quit"
+        isMenu = quit_event and (True if menu_route == "" else False)
 
-    playing = False if difficulty == "Quit" else True
-    game = Game(difficulty, name)
+    playing = False if menu_route == "Quit" else True
+
+    if menu_route == "Scoreboard":
+        scoreboard = Scoreboard()
+    else:
+        game = Game(menu_route, name)
+
     if game.current == game.goal:
-        game = Game(difficulty, name)
+        game = Game(menu_route, name)
         playing = True
         graphics.input_box.reset_last_input()
     while playing:

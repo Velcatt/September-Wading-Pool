@@ -82,13 +82,21 @@ class Game:
                 li.append(i)
         return li
 
+    def save_score(best_score):
+        if self.difficulty == "Hard":
+            with open("best_scores_hard") as f:
+                scorelist = f.read()
+        else:
+            with open("best_scores_easy") as f:
+                scorelist = f.read()
+
     def win(self):
         self.announcement = "YOU WIN!"
         self.score = "Score : " + str(self.attempts)
         self.best_score.append(datetime.date.today().isoformat())
         self.best_score.append(self.name)
         self.best_score.append(str(self.attempts))
-        print(self.best_score)
+        self.save_score(best_score)
         self.info = "Type 'again' to try again, 'quit' to quit"
 
     def lose(self):

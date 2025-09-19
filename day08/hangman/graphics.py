@@ -6,8 +6,9 @@ from button import Button
 class Graphics:
 
     def __init__(self, menu):
-        self.easy = Button(200, 250, 200, 32, "Easy")
-        self.hard = Button(200, 300, 200, 32, "Hard")
+        self.easy = Button(200, 200, 200, 32, "Easy")
+        self.hard = Button(200, 250, 200, 32, "Hard")
+        self.scoreboard = Button(200, 300, 200, 32, "Scoreboard")
         self.quit = Button(200, 350, 200, 32, "Quit")
         self.title_font = pygame.font.SysFont(None, 40)
         self.title = self.title_font.render("HANGMAN", False, (0, 0, 0))
@@ -54,13 +55,16 @@ class Graphics:
             return "Easy"
         elif self.hard.is_pressed(event):
             return "Hard"
+        elif self.scoreboard.is_pressed(event):
+            return "Scoreboard"
         elif self.quit.is_pressed(event):
             return "Quit"
         self.window.blit(self.bg, (0, 0))
-        self.window.blit(self.title, (200, 200))
+        self.window.blit(self.title, (200, 150))
         self.window.blit(self.name, (200, 450))
         self.easy.draw(self.window)
         self.hard.draw(self.window)
+        self.scoreboard.draw(self.window)
         self.quit.draw(self.window)
         self.name_input.update()
         self.name_input.handle_event(event)
@@ -129,3 +133,16 @@ class Graphics:
         for i in range(min(penalty, 10)):
 
             self.HANGMAN_DRAW_FUNCTIONS[i](self)
+
+
+class Scoreboard:
+
+    def __init__(self):
+        self.easy_scoreboard = [
+            line.strip().lower() for line in open("best_scores_easy")
+        ]
+        self.hard_scoreboard = [
+            line.strip().lower() for line in open("best_scores_hard")
+        ]
+
+    # def draw(self, screen):
