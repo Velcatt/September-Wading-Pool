@@ -1,6 +1,7 @@
 import pygame
 import random
 import datetime
+import ast
 from english_words import get_english_words_set
 
 ENGLISH_WORDS_SET = get_english_words_set(["web2"], lower=True)
@@ -43,8 +44,10 @@ class Game:
 
     def __init__(self, difficulty, name):
         if difficulty == "Easy":
+            self.difficulty = difficulty
             self.goal = self.randomset(EASY_ENGLISH_WORDS_SET)
         elif difficulty == "Hard":
+            self.difficulty = difficulty
             self.goal = self.randomset(ENGLISH_WORDS_SET)
         elif difficulty == "Quit":
             self.run("quit")
@@ -82,13 +85,44 @@ class Game:
                 li.append(i)
         return li
 
-    def save_score(best_score):
+    def save_score(self, best_score):
+        converted_scorelist = []
+        score_index = -1
         if self.difficulty == "Hard":
-            with open("best_scores_hard") as f:
-                scorelist = f.read()
+            file = "best_scores_hard"
+            with open(file) as f:
+                scorelist = f.read().splitlines()
         else:
-            with open("best_scores_easy") as f:
-                scorelist = f.read()
+            file = "best_scores_easy"
+            with open(file) as f:
+                scorelist = f.read().splitlines()
+        for element in scorelist:
+            converted_scorelist.append(ast.literal_eval(element))
+        i = len(converted_scorelist) - 1
+        while i >= 0:
+            print("best_score :")
+            print(best_score[2])
+            print("converted_scorelist[i][2] :")
+            print(converted_scorelist[i][2])
+            print("converted_scorelist[i-1][2] :")
+            print(converted_scorelist[i - 1][2])
+            if int(best_score[2]) < int(converted_scorelist[0][2]):
+                score_index = 0
+                i = 0
+            elif int(best_score[2]) < int(converted_scorelist[i][2]) and int(
+                best_score[2]
+            ) >= int(converted_scorelist[i - 1][2]):
+                print("converted_scorelist[i-1][2] :")
+                print(converted_scorelist[i - 1][2])
+                score_index = i
+            i -= 1
+        if score_index != -1:
+            converted_scorelist.insert(score_index, best_score)
+            if len(converted_scorelist) > 10:
+                converted_scorelist.pop(10)
+            with open(file, "w") as f:
+                for element in converted_scorelist:
+                    f.write(str(element) + "\n")
 
     def win(self):
         self.announcement = "YOU WIN!"
@@ -96,7 +130,7 @@ class Game:
         self.best_score.append(datetime.date.today().isoformat())
         self.best_score.append(self.name)
         self.best_score.append(str(self.attempts))
-        self.save_score(best_score)
+        self.save_score(self.best_score)
         self.info = "Type 'again' to try again, 'quit' to quit"
 
     def lose(self):
