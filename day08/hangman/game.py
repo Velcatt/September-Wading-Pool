@@ -41,8 +41,15 @@ ALPHABET_LIST = [
 
 class Game:
 
-    def __init__(self):
-        self.goal = self.randomset(EASY_ENGLISH_WORDS_SET)
+    def __init__(self, difficulty, name):
+        if difficulty == "Easy":
+            self.goal = self.randomset(EASY_ENGLISH_WORDS_SET)
+        elif difficulty == "Hard":
+            self.goal = self.randomset(ENGLISH_WORDS_SET)
+        elif difficulty == "Quit":
+            self.run("quit")
+            self.goal = ""
+            quit()
         self.penalty = 0
         self.attempts = 0
         self.best_score = []
@@ -53,8 +60,8 @@ class Game:
         self.info = ""
         self.score = ""
         self.last_input = ""
-        self.event = pygame.event.Event(pygame.USEREVENT)
         self.newgame = True
+        self.name = name
 
     def randomset(self, s):
         return random.sample(sorted(s), 1)[0]
@@ -79,6 +86,7 @@ class Game:
         self.announcement = "YOU WIN!"
         self.score = "Score : " + str(self.attempts)
         self.best_score.append(datetime.date.today().isoformat())
+        self.best_score.append(self.name)
         self.best_score.append(str(self.attempts))
         print(self.best_score)
         self.info = "Type 'again' to try again, 'quit' to quit"
@@ -87,7 +95,6 @@ class Game:
         self.announcement = "YOU LOSE!"
         self.current = self.goal
         self.info = "Type 'again' to try again, 'quit' to quit"
-        
 
     def replace_in_current(self, current, li, letter):
         newcurrent = ""
@@ -98,9 +105,8 @@ class Game:
                 newcurrent += current[i]
         return newcurrent
 
-    def run(self):
-        self.event = pygame.event.poll()
-        if self.event.type == pygame.QUIT:
+    def run(self, event):
+        if event == "quit":
             self.newgame = False
             return False
         if self.current == self.goal:
@@ -142,3 +148,19 @@ class Game:
         if self.penalty >= 10:
             self.lose()
         return True
+
+
+class Menu:
+
+    def __init__(self):
+        self.difficulty = ""
+        self.name = ""
+
+    def update_diff(self, difficulty):
+        self.difficulty = difficulty
+
+    def quit_menu(self, event):
+        if event == "quit":
+            return False
+        else:
+            return True

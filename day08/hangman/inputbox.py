@@ -38,4 +38,4 @@ class InputBox:
         pygame.draw.rect(screen, self.color, self.rect, 2)
 
     def reset_last_input(self):
-        self.last_input=""
+        self.last_input = ""
