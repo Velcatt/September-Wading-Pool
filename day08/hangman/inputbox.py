@@ -35,6 +35,7 @@ class InputBox:
 
     def draw(self, screen):
         # Blit the text.
+        self.txt_surface = FONT.render(self.text, True, self.color)
         screen.blit(self.txt_surface, (self.rect.x + 5, self.rect.y + 5))
         # Draw the rect.
         pygame.draw.rect(screen, self.color, self.rect, 2)
