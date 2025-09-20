@@ -1,4 +1,5 @@
 import pygame
+import ast
 from inputbox import InputBox
 from button import Button
 
@@ -6,15 +7,15 @@ from button import Button
 class Graphics:
 
     def __init__(self, menu):
-        self.easy = Button(200, 200, 200, 32, "Easy")
-        self.hard = Button(200, 250, 200, 32, "Hard")
-        self.scoreboard = Button(200, 300, 200, 32, "Scoreboard")
-        self.quit = Button(200, 350, 200, 32, "Quit")
+        self.easy = Button(200, 200, 200, 32, "Easy", pygame.Color("black"))
+        self.hard = Button(200, 250, 200, 32, "Hard", pygame.Color("black"))
+        self.scoreboard = Button(200, 300, 200, 32, "Scoreboard", pygame.Color("black"))
+        self.quit = Button(200, 350, 200, 32, "Quit", pygame.Color("black"))
         self.title_font = pygame.font.SysFont(None, 40)
         self.title = self.title_font.render("HANGMAN", False, (0, 0, 0))
         self.name_font = pygame.font.SysFont(None, 25)
         self.name = self.name_font.render("Enter your name : ", False, (255, 255, 255))
-        self.name_input = InputBox(200, 500, 200, 32)
+        self.name_input = InputBox(200, 500, 200, 32, disabled=True)
 
         self.window = pygame.display.set_mode((600, 600))
         self.bg = pygame.image.load("pixelart.png")
@@ -138,11 +139,73 @@ class Graphics:
 class Scoreboard:
 
     def __init__(self):
+        self.bg = pygame.image.load("pixelart_scoreboard.png")
         self.easy_scoreboard = [
             line.strip().lower() for line in open("best_scores_easy")
         ]
         self.hard_scoreboard = [
             line.strip().lower() for line in open("best_scores_hard")
         ]
+        self.button_back_to_menu = Button(
+            200, 500, 200, 32, "Back to menu", pygame.Color("white")
+        )
+        self.scoreboard_font = pygame.font.SysFont(None, 25)
 
-    # def draw(self, screen):
+        self.title_font = pygame.font.SysFont(None, 32)
+        self.title_easy = self.title_font.render("Easy Mode", False, (255, 255, 255))
+        self.title_hard = self.title_font.render("Hard Mode", False, (255, 255, 255))
+
+        self.easy_converted_scorelist = []
+        self.easy_scoreboard_display = []
+        self.hard_converted_scorelist = []
+        self.hard_scoreboard_display = []
+        for element in self.easy_scoreboard:
+            self.easy_converted_scorelist.append(ast.literal_eval(element))
+
+        for i in range(len(self.easy_converted_scorelist)):
+            self.easy_scoreboard_display.append(
+                self.scoreboard_font.render(
+                    str(i + 1)
+                    + ". "
+                    + self.easy_converted_scorelist[i][1]
+                    + " - "
+                    + self.easy_converted_scorelist[i][2]
+                    + " attempts",
+                    False,
+                    (255, 255, 255),
+                )
+            )
+        for element in self.hard_scoreboard:
+            self.hard_converted_scorelist.append(ast.literal_eval(element))
+
+        for i in range(len(self.hard_converted_scorelist)):
+            self.hard_scoreboard_display.append(
+                self.scoreboard_font.render(
+                    str(i + 1)
+                    + ". "
+                    + self.hard_converted_scorelist[i][1]
+                    + " - "
+                    + self.hard_converted_scorelist[i][2]
+                    + " attempts",
+                    False,
+                    (255, 255, 255),
+                )
+            )
+
+    def draw(self, screen):
+        screen.blit(self.bg, (0, 0))
+        screen.blit(self.title_easy, (25, 40))
+        screen.blit(self.title_hard, (300, 40))
+        self.button_back_to_menu.draw(screen)
+
+        for i in range(len(self.easy_scoreboard_display)):
+            screen.blit(self.easy_scoreboard_display[i], (25, 70 + i * 26))
+
+        for i in range(len(self.hard_scoreboard_display)):
+            screen.blit(self.hard_scoreboard_display[i], (300, 70 + i * 26))
+
+    def back_to_menu_check(self, event):
+        if self.button_back_to_menu.is_pressed(event):
+            return True
+        else:
+            return False

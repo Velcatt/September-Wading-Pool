@@ -1,15 +1,14 @@
 import pygame
 
 pygame.init()
-COLOR_ACTIVE = pygame.Color("black")
 FONT = pygame.font.Font(None, 32)
 
 
 class Button:
 
-    def __init__(self, x, y, w, h, text):
+    def __init__(self, x, y, w, h, text, color):
         self.rect = pygame.Rect(x, y, w, h)
-        self.color = COLOR_ACTIVE
+        self.color = color
         self.text = text
         self.txt_surface = FONT.render(text, True, self.color)
         self.last_input = ""

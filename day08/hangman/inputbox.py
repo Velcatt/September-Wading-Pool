@@ -7,18 +7,20 @@ FONT = pygame.font.Font(None, 32)
 
 class InputBox:
 
-    def __init__(self, x, y, w, h, text=""):
+    def __init__(self, x, y, w, h, text="", disabled=False):
         self.rect = pygame.Rect(x, y, w, h)
         self.color = COLOR_ACTIVE
         self.text = text
         self.txt_surface = FONT.render(text, True, self.color)
         self.last_input = ""
+        self.disabled = disabled
 
     def handle_event(self, event):
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_RETURN:
-                self.last_input = self.text
-                self.text = ""
+                if not self.disabled:
+                    self.last_input = self.text
+                    self.text = ""
             elif event.key == pygame.K_BACKSPACE:
                 self.text = self.text[:-1]
             else:

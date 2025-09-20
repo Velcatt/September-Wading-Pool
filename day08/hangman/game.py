@@ -100,20 +100,12 @@ class Game:
             converted_scorelist.append(ast.literal_eval(element))
         i = len(converted_scorelist) - 1
         while i >= 0:
-            print("best_score :")
-            print(best_score[2])
-            print("converted_scorelist[i][2] :")
-            print(converted_scorelist[i][2])
-            print("converted_scorelist[i-1][2] :")
-            print(converted_scorelist[i - 1][2])
             if int(best_score[2]) < int(converted_scorelist[0][2]):
                 score_index = 0
                 i = 0
             elif int(best_score[2]) < int(converted_scorelist[i][2]) and int(
                 best_score[2]
             ) >= int(converted_scorelist[i - 1][2]):
-                print("converted_scorelist[i-1][2] :")
-                print(converted_scorelist[i - 1][2])
                 score_index = i
             i -= 1
         if score_index != -1:
